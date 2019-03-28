@@ -4,6 +4,7 @@ import GithubStrategy from 'passport-github2'
 import express from 'express'
 import session from 'express-session'
 import config from '@rplan/config'
+import axios from 'axios'
 
 const port = config.get('server:port') || 3000
 const clientID = config.get('oauth:client_id')
@@ -11,6 +12,7 @@ const clientSecret = config.get('oauth:client_secret')
 const callbackURL = config.get('oauth:callback_url')
 const cookieSecret = config.get('session:cookie_secret')
 const cookieMaxAge = Number.parseInt(config.get('session:cookie_max_age'), 10)
+const githubOrg = config.get('github:org')
 
 if (!clientID) {
   console.error('no client id given')
@@ -37,9 +39,21 @@ passport.use(
     clientID,
     clientSecret,
     callbackURL,
+    scope: ['read:org'],
   },
-  ((accessToken, refreshToken, profile, done) => {
-    done(null, profile)
+  (async (accessToken, refreshToken, profile, done) => {
+    const { data: orgsData } = await axios.get('https://api.github.com/user/orgs', {
+      headers: {
+        Accept: 'application/json',
+        Authorization: `token ${accessToken}`,
+      },
+    })
+    const orgNames = orgsData.map(org => org.login)
+    if (!orgNames.includes(githubOrg)) {
+      done(null, false, { message: 'You are not a member of the specified GitHub org' })
+      return
+    }
+    done(null, profile.username)
   })),
 )
 
@@ -72,7 +86,7 @@ app.get('/auth/login',
     const state = redirect_to
       ? Buffer.from(JSON.stringify({ redirectTo: redirect_to })).toString('base64')
       : undefined
-    const authenticator = passport.authenticate('github', { scope: ['user:email'], state })
+    const authenticator = passport.authenticate('github', { state })
     authenticator(req, res, next)
   })
 
