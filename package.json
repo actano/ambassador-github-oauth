@@ -1,0 +1,29 @@
+{
+  "name": "auth",
+  "version": "1.0.0",
+  "main": "lib/index.js",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.16.4",
+    "express-session": "^1.15.6",
+    "passport": "^0.4.0",
+    "passport-github2": "^0.1.11"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.2.3",
+    "@babel/core": "^7.3.4",
+    "@babel/node": "^7.2.2",
+    "@babel/preset-env": "^7.3.4",
+    "@babel/register": "^7.0.0",
+    "eslint": "^5.15.1",
+    "eslint-config-actano-base": "^4.0.0",
+    "eslint-plugin-import": "^2.16.0"
+  },
+  "scripts": {
+    "build": "babel -d lib src",
+    "clean": "rm -rf lib",
+    "lint": "eslint src",
+    "start": "node lib",
+    "start:dev": "yarn clean && yarn build && yarn start"
+  }
+}
