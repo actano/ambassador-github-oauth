@@ -6,3 +6,4 @@ oauth:
   callback_url: ''
 session:
   cookie_secret: ''
+  cookie_max_age: 3200000000 # 5 days

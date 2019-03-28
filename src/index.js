@@ -10,6 +10,7 @@ const clientID = config.get('oauth:client_id')
 const clientSecret = config.get('oauth:client_secret')
 const callbackURL = config.get('oauth:callback_url')
 const cookieSecret = config.get('session:cookie_secret')
+const cookieMaxAge = Number.parseInt(config.get('session:cookie_max_age'), 10)
 
 if (!clientID) {
   console.error('no client id given')
@@ -52,7 +53,14 @@ passport.deserializeUser((user, done) => {
 
 const app = express()
 
-app.use(session({ secret: cookieSecret, resave: false, saveUninitialized: false }))
+app.use(session({
+  secret: cookieSecret,
+  cookie: {
+    maxAge: cookieMaxAge,
+  },
+  resave: false,
+  saveUninitialized: false,
+}))
 app.use(passport.initialize())
 app.use(passport.session())
 
