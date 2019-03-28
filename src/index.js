@@ -1,13 +1,41 @@
+/* eslint-disable no-console */
 import passport from 'passport'
 import GithubStrategy from 'passport-github2'
 import express from 'express'
 import session from 'express-session'
+import config from '@rplan/config'
+
+const port = config.get('server:port') || 3000
+const clientID = config.get('oauth:client_id')
+const clientSecret = config.get('oauth:client_secret')
+const callbackURL = config.get('oauth:callback_url')
+const cookieSecret = config.get('session:cookie_secret')
+
+if (!clientID) {
+  console.error('no client id given')
+  process.exit(1)
+}
+
+if (!clientSecret) {
+  console.error('no client secret given')
+  process.exit(1)
+}
+
+if (!callbackURL) {
+  console.error('no callback URL given')
+  process.exit(1)
+}
+
+if (!cookieSecret) {
+  console.error('no cookie secret given')
+  process.exit(1)
+}
 
 passport.use(
   new GithubStrategy({
-    clientID: 'NYI',
-    clientSecret: 'NYI',
-    callbackURL: 'NYI',
+    clientID,
+    clientSecret,
+    callbackURL,
   },
   ((accessToken, refreshToken, profile, done) => {
     done(null, profile)
@@ -24,7 +52,7 @@ passport.deserializeUser((user, done) => {
 
 const app = express()
 
-app.use(session({ secret: 'foobar', resave: false, saveUninitialized: false }))
+app.use(session({ secret: cookieSecret, resave: false, saveUninitialized: false }))
 app.use(passport.initialize())
 app.use(passport.session())
 
@@ -65,8 +93,8 @@ app.use((req, res) => {
   }
 })
 
-const server = app.listen(80, () => {
-  console.log('server listening on port 80')
+const server = app.listen(port, () => {
+  console.log(`server listening on port ${port}`)
 })
 
 process.on('SIGINT', () => {
