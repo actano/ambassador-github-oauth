@@ -1,7 +1,7 @@
-const passport = require('passport')
-const GithubStrategy = require('passport-github2')
-const express = require('express')
-const session = require('express-session')
+import passport from 'passport'
+import GithubStrategy from 'passport-github2'
+import express from 'express'
+import session from 'express-session'
 
 passport.use(
   new GithubStrategy({
