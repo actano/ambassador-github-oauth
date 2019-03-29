@@ -1,4 +1,4 @@
-# ambassador-github-oauth
+# ambassador-github-oauth [![Build Status](https://travis-ci.org/actano/ambassador-github-oauth.svg?branch=master)](https://travis-ci.org/actano/ambassador-github-oauth)
 Ambassador authentication service which uses Github OAuth
 
 ## Config
