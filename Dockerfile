@@ -7,8 +7,11 @@ COPY yarn.lock yarn.lock
 
 RUN yarn install --frozen-lockfile
 
+COPY src src
+COPY babel.config.js babel.config.js
+RUN yarn build && rm -r src babel.config.js
+
 COPY .rplan-config.yml .rplan-config.yml
-COPY lib lib
 
 EXPOSE 3000
 

@@ -23,6 +23,7 @@
   },
   "scripts": {
     "build": "babel -d lib src",
+    "ci": "yarn clean && yarn lint && yarn build",
     "clean": "rm -rf lib",
     "lint": "eslint src",
     "start": "node lib",
