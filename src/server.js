@@ -5,6 +5,7 @@ import createMemoryStore from 'memorystore'
 import { setupPassport } from './passport'
 import login from './login'
 import authentication from './authentication'
+import health from './health'
 
 const MemoryStore = createMemoryStore(session)
 
@@ -25,6 +26,7 @@ export default function initServer(config) {
 
   setupPassport(config, app)
 
+  app.use(health())
   app.use(login())
   app.use(authentication())
 
