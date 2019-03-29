@@ -8,7 +8,7 @@ script:
 - yarn ci
 deploy:
   provider: script
-  script: bash docker_push
+  script: bash docker_publish.sh
   on:
     tags: true
     repo: actano/ambassador-github-oauth
