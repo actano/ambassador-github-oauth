@@ -91,7 +91,7 @@ app.get('/auth/login',
   })
 
 app.get('/auth/login/callback',
-  passport.authenticate('github', { failureRedirect: '/auth/login' }),
+  passport.authenticate('github'),
   (req, res) => {
     try {
       const { state } = req.query
