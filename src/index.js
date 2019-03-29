@@ -3,45 +3,20 @@ import passport from 'passport'
 import GithubStrategy from 'passport-github2'
 import express from 'express'
 import session from 'express-session'
-import config from '@rplan/config'
 import axios from 'axios'
 
-const port = config.get('server:port') || 3000
-const clientID = config.get('oauth:client_id')
-const clientSecret = config.get('oauth:client_secret')
-const callbackURL = config.get('oauth:callback_url')
-const cookieSecret = config.get('session:cookie_secret')
-const cookieMaxAge = Number.parseInt(config.get('session:cookie_max_age'), 10)
-const githubOrg = config.get('github:org')
+import { parseConfig } from './config'
 
-if (!clientID) {
-  console.error('no client id given')
-  process.exit(1)
-}
-
-if (!clientSecret) {
-  console.error('no client secret given')
-  process.exit(1)
-}
-
-if (!callbackURL) {
-  console.error('no callback URL given')
-  process.exit(1)
-}
-
-if (!cookieSecret) {
-  console.error('no cookie secret given')
-  process.exit(1)
-}
+const config = parseConfig()
 
 passport.use(
   new GithubStrategy({
-    clientID,
-    clientSecret,
-    callbackURL,
+    clientID: config.clientId,
+    clientSecret: config.clientSecret,
+    callbackURL: config.callbackUrl,
     scope: ['read:org'],
   },
-  (async (accessToken, refreshToken, profile, done) => {
+  async (accessToken, refreshToken, profile, done) => {
     const { data: orgsData } = await axios.get('https://api.github.com/user/orgs', {
       headers: {
         Accept: 'application/json',
@@ -49,12 +24,12 @@ passport.use(
       },
     })
     const orgNames = orgsData.map(org => org.login)
-    if (!orgNames.includes(githubOrg)) {
-      done(null, false, { message: 'You are not a member of the specified GitHub org' })
+    if (config.githubOrg && !orgNames.includes(config.githubOrg)) {
+      done(null, null, { message: `You are not a member of the '${config.githubOrg}' GitHub org` })
       return
     }
     done(null, profile.username)
-  })),
+  }),
 )
 
 passport.serializeUser((user, done) => {
@@ -68,9 +43,9 @@ passport.deserializeUser((user, done) => {
 const app = express()
 
 app.use(session({
-  secret: cookieSecret,
+  secret: config.cookieSecret,
   cookie: {
-    maxAge: cookieMaxAge,
+    maxAge: config.cookieMaxAge,
   },
   resave: false,
   saveUninitialized: false,
@@ -115,8 +90,8 @@ app.use((req, res) => {
   }
 })
 
-const server = app.listen(port, () => {
-  console.log(`server listening on port ${port}`)
+const server = app.listen(config.port, () => {
+  console.log(`server listening on port ${config.port}`)
 })
 
 process.on('SIGINT', () => {
