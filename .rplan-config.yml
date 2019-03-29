@@ -6,6 +6,6 @@ oauth:
   callback_url: ''
 session:
   cookie_secret: ''
-  cookie_max_age: 3200000000 # 5 days
+  cookie_max_age: 432000000 # 5 days
 github:
   org: ''
