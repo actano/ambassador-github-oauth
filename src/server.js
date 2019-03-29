@@ -1,9 +1,12 @@
 import express from 'express'
 import session from 'express-session'
+import createMemoryStore from 'memorystore'
 
 import { setupPassport } from './passport'
 import login from './login'
 import authentication from './authentication'
+
+const MemoryStore = createMemoryStore(session)
 
 export default function initServer(config) {
   const app = express()
@@ -15,6 +18,9 @@ export default function initServer(config) {
     },
     resave: false,
     saveUninitialized: false,
+    store: new MemoryStore({
+      checkPeriod: config.cookieMaxAge,
+    }),
   }))
 
   setupPassport(config, app)
