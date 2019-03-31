@@ -4,7 +4,7 @@ Ambassador authentication service which uses Github OAuth
 ## Config
 
 The service can be configured by adjusting values in the `.rplan-config.yml` or by setting values
-via environment variables by separating the YAML keys with `__`, e.g. `session__cookie_max_age=432000000`.
+via environment variables by separating the YAML keys with `__`, e.g. `session__cookie__max_age=432000000`.
 
 ```yaml
 server:
@@ -19,10 +19,11 @@ oauth:
   # to be publicly reachable by the clients (required)
   callback_url: ''
 session:
-  # Secret for encrypting the session cookie (required)
-  cookie_secret: ''
-  # Max age of the session cookie in ms (default: 5 days)
-  cookie_max_age: 432000000 # 5 days
+  cookie:
+    # Secret for encrypting the session cookie (required)
+    secret: ''
+    # Max age of the session cookie in ms (default: 5 days)
+    max_age: 432000000 # 5 days
 github:
   # Name of the Github org the user has to be a member of or empty to allow all users (default: empty)
   org: ''

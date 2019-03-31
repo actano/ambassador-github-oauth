@@ -5,8 +5,8 @@ export function parseConfig() {
   const clientId = config.get('oauth:client_id')
   const clientSecret = config.get('oauth:client_secret')
   const callbackUrl = config.get('oauth:callback_url')
-  const cookieSecret = config.get('session:cookie_secret')
-  const cookieMaxAge = Number.parseInt(config.get('session:cookie_max_age'), 10)
+  const cookieSecret = config.get('session:cookie:secret')
+  const cookieMaxAge = Number.parseInt(config.get('session:cookie:max_age'), 10)
   const githubOrg = config.get('github:org')
 
   if (!clientId) {
