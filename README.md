@@ -24,6 +24,8 @@ session:
     secret: ''
     # Max age of the session cookie in ms (default: 5 days)
     max_age: 432000000 # 5 days
+    # The domain for which the session cookie belongs
+    domain: ''
 github:
   # Name of the Github org the user has to be a member of or empty to allow all users (default: empty)
   org: ''

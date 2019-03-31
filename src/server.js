@@ -16,6 +16,7 @@ export default function initServer(config) {
     secret: config.cookieSecret,
     cookie: {
       maxAge: config.cookieMaxAge,
+      domain: config.cookieDomain,
     },
     resave: false,
     saveUninitialized: false,
