@@ -34,7 +34,7 @@ export default function login() {
         const { state } = req.query
         const { redirectTo } = decodeOAuthState(state)
         const redirectPath = decodeURIComponent(redirectTo)
-        if (typeof redirectPath === 'string' && redirectPath.startsWith('/')) {
+        if (typeof redirectPath === 'string') {
           res.redirect(redirectPath)
           return
         }
