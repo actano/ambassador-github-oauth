@@ -2,7 +2,7 @@ import createLogger from '@rplan/logger'
 import { parseConfig } from './config'
 import initServer from './server'
 
-const logger = createLogger('ambassador-github-oauth')
+const logger = createLogger('index')
 
 const config = parseConfig()
 const app = initServer(config)

@@ -20,3 +20,5 @@ session:
 github:
   # Name of the Github org the user has to be a member of or empty to allow all users (default: empty)
   org: ''
+logging:
+  root_logger_name: ambassador-github-oauth
