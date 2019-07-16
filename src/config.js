@@ -11,7 +11,7 @@ export function parseConfig() {
   const githubOrg = config.get('github:org')
 
   if (!clientId) {
-    throw new Error('no client id give')
+    throw new Error('no client id given')
   }
 
   if (!clientSecret) {
