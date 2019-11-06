@@ -15,4 +15,5 @@ COPY .rplan-config.yml .rplan-config.yml
 
 EXPOSE 3000
 
-CMD ["yarn", "start"]
+# We can't use yarn here because of https://github.com/yarnpkg/yarn/issues/4667
+CMD ["node", "./lib/index.js"]
